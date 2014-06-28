@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/souleiman/seesaw/webserver/database"
-	"github.com/souleiman/seesaw/webserver/handler"
+	"github.com/TeamTwilightSparkle/webserver/database"
+	"github.com/TeamTwilightSparkle/webserver/handler"
 )
 
 func main() {

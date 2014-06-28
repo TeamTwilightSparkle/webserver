@@ -7,8 +7,7 @@ import (
 	"encoding/base64"
 	"net/url"
 
-	"github.com/souleiman/seesaw/webserver/model/profile"
-//	"github.com/souleiman/seesaw/webserver/model"
+	"github.com/TeamTwilightSparkle/webserver/model"
 )
 
 type RestHelper func([]string, http.ResponseWriter, *http.Request)
@@ -18,29 +17,25 @@ func RestProfile(rest []string, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-
-	var profiles []profile.Profile
+	queries, _ := url.ParseQuery(r.URL.RawQuery)
+	profile := new(model.Profile)
+	var profiles []model.Profile
 	var err error
 
-	if profiles, err = profile.Get(rest[FIELD_INDEX], rest[VALUE_INDEX]); err != nil {
+	if profiles, err = profile.Get(queries.Get("omnisearch"), rest[FIELD_INDEX], rest[VALUE_INDEX]); err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
-	var iface interface {}
-	if len := len(profiles); len == 0 {
-		iface = nil
-	} else if len == 1 {
-		iface = profiles[0]
-	} else {
-		iface = struct {Result []profile.Profile `json:"result"`} {profiles}
-	}
+	iface := profile.Validate(profiles)
+	output(iface, queries, w)
+}
 
+func output(iface interface {}, queries url.Values, w http.ResponseWriter) {
 	json, _ := json.MarshalIndent(iface, "", "\t")
-	qMap, _ := url.ParseQuery(r.URL.RawQuery)
 
 	var output string = string(json)
-	if encode := qMap["encode"]; encode != nil && encode[0] == "true" {
+	if encode := queries.Get("encode"); encode == "true" {
 		output = base64.StdEncoding.EncodeToString(json)
 	}
 	fmt.Fprintf(w, "%v\n", output)

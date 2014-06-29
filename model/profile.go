@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/url"
 
-	"github.com/TeamTwilightSparkle/webserver/database"
+	"github.com/TeamTwilightSparkle/webserver/controller/database"
 )
 
 type profile_functions func (url.Values, string, string)([]Profile, error)

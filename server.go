@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/TeamTwilightSparkle/webserver/database"
-	"github.com/TeamTwilightSparkle/webserver/handler"
+	"github.com/TeamTwilightSparkle/webserver/controller/database"
+	"github.com/TeamTwilightSparkle/webserver/controller/handler"
 )
 
 func main() {

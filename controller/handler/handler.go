@@ -1,30 +1,16 @@
 package handler
 
 import (
-//	"database/sql"
 	"fmt"
 	"net/http"
 	"strings"
 
-//	"github.com/coopernurse/gorp"
+	"github.com/TeamTwilightSparkle/webserver/controller"
+	"github.com/TeamTwilightSparkle/webserver/controller/rest"
 )
 
-const (
-	API_SIZE = 4
-	API_INDEX = 0
-	REST_INDEX = 1
-	FIELD_INDEX = 2
-	VALUE_INDEX = 3
-)
-
+type RestHelper func([]string, http.ResponseWriter, *http.Request)
 type HandleHelper func(http.ResponseWriter, *http.Request)
-var api_map map[string] RestHelper
-
-func init() {
-	api_map = make(map[string] RestHelper)
-	api_map["profile"] = RestProfile
-	api_map["content"] = RestContent
-}
 
 func Root() HandleHelper {
 	maps := make(map[string]string)
@@ -34,6 +20,9 @@ func Root() HandleHelper {
 }
 
 func Api() HandleHelper {
+	api_map := make(map[string] RestHelper)
+	api_map["profile"] = rest.RestProfile
+	api_map["content"] = rest.RestContent
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
@@ -47,7 +36,7 @@ func Api() HandleHelper {
 			return
 		}
 
-		if rest := api_map[split[REST_INDEX]]; rest != nil {
+		if rest := api_map[split[controller.REST_INDEX]]; rest != nil {
 			rest(split, w, r)
 		} else {
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)

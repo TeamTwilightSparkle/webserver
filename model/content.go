@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"errors"
 
-	"github.com/TeamTwilightSparkle/webserver/database"
+	"github.com/TeamTwilightSparkle/webserver/controller/database"
 )
 
 type content_functions func (string, string)([]Content, error)

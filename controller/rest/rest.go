@@ -1,4 +1,4 @@
-package handler
+package rest
 
 import (
 	"net/http"
@@ -8,6 +8,7 @@ import (
 	"net/url"
 
 	"github.com/TeamTwilightSparkle/webserver/model"
+	"github.com/TeamTwilightSparkle/webserver/controller"
 )
 
 type RestHelper func([]string, http.ResponseWriter, *http.Request)
@@ -22,23 +23,13 @@ func RestProfile(rest []string, w http.ResponseWriter, r *http.Request) {
 	var profiles []model.Profile
 	var err error
 
-	if profiles, err = profile.Get(queries, rest[FIELD_INDEX], rest[VALUE_INDEX]); err != nil {
+	if profiles, err = profile.Get(queries, rest[controller.FIELD_INDEX], rest[controller.VALUE_INDEX]); err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	iface := profile.Format(profiles)
 	output(iface, queries, w)
-}
-
-func output(iface interface {}, queries url.Values, w http.ResponseWriter) {
-	json, _ := json.MarshalIndent(iface, "", "\t")
-
-	var output string = string(json)
-	if encode := queries.Get("encode"); encode == "true" {
-		output = base64.StdEncoding.EncodeToString(json)
-	}
-	fmt.Fprintf(w, "%v\n", output)
 }
 
 func RestContent(rest []string, w http.ResponseWriter, r *http.Request) {
@@ -50,17 +41,17 @@ func RestContent(rest []string, w http.ResponseWriter, r *http.Request) {
 //	var contents []model.Content
 //	var sql_query string
 
-	switch rest[FIELD_INDEX] {
-	case "id":
+	//switch rest[FIELD_INDEX] {
+	//case "id":
 //		sql_query = fmt.Sprintf("SELECT * FROM CONTENT WHERE %s = %s", rest[FIELD_INDEX], rest[VALUE_INDEX])
-	case "author":
+	//case "author":
 //		sql_query = fmt.Sprintf("SELECT CONTENT.* FROM CONTENT, PROFILE WHERE %s = '%s' AND content.author = profile.username", rest[FIELD_INDEX], rest[VALUE_INDEX])
-	case "tag":
+	//case "tag":
 //		sql_query = fmt.Sprintf("SELECT CONTENT.* FROM CONTENT, TAG WHERE tag.content_id = content.id AND %s = '#%s';", rest[FIELD_INDEX], rest[VALUE_INDEX])
-	default:
-		http.Error(w, http.StatusText(http.StatusNotAcceptable), http.StatusNotAcceptable)
-		return
-	}
+	//default:
+		//http.Error(w, http.StatusText(http.StatusNotAcceptable), http.StatusNotAcceptable)
+		//return
+	//}
 
 /*	if _, err := dbmap.Select(&contents, sql_query); err != nil {
 		http.Error(w, fmt.Sprintf("%v", err), http.StatusConflict)
@@ -112,4 +103,14 @@ func RestContent(rest []string, w http.ResponseWriter, r *http.Request) {
 		output = base64.StdEncoding.EncodeToString(json)
 	}
 	fmt.Fprintf(w, "%v\n", output)*/
+}
+
+func output(iface interface {}, queries url.Values, w http.ResponseWriter) {
+	json, _ := json.MarshalIndent(iface, "", "\t")
+
+	var output string = string(json)
+	if encode := queries.Get("encode"); encode == "true" {
+		output = base64.StdEncoding.EncodeToString(json)
+	}
+	fmt.Fprintf(w, "%v\n", output)
 }

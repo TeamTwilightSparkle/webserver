@@ -3,9 +3,9 @@ package model
 import "time"
 
 type Comment struct {
-	Id            int		`json:"id"`
+	Comment_id    int		`json:"comment_id"`
 	Username	  string	`json:"username"`
-	Content_id    int		`json:"content_id"`
+	Id    int				`json:"id"`
 	Post_number   int		`json:"post_number"`
 	Comment       string	`json:"comment"`
 	Last_modified time.Time	`json:"last_modified"`

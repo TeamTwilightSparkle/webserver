@@ -39,3 +39,7 @@ func (conn *connection) Select(i interface {}, q string, args ...interface {}) e
 	}
 	return nil
 }
+
+func (conn *connection) SelectInt(q string) (i int64, err error) {
+	return Conn.dbmap.SelectInt(q)
+}

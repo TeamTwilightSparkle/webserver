@@ -14,13 +14,13 @@ type profile_functions func(url.Values, string, string) ([]Profile, error)
 var profile_table map[string] profile_functions
 
 type Profile struct {
-	Id             int            `json:"id"`
-	Username       string        `json:"username"`
-	Level          int            `json:"level"`
-	Charges        []string    `json:"charges",db:"-"`
-	Contents       []string    `json:"contents",db:"-"`
-	Last_seen      time.Time    `json:"last_seen"`
-	Date_joined    time.Time    `json:"date_joined"`
+	Id             int			`json:"id"`
+	Username       string		`json:"username"`
+	Level          int			`json:"level"`
+	Charges        []string		`json:"charges",db:"-"`
+	Contents       []string		`json:"contents",db:"-"`
+	Last_seen      time.Time	`json:"last_seen"`
+	Date_joined    time.Time	`json:"date_joined"`
 }
 
 func init() {

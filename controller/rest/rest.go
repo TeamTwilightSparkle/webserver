@@ -24,8 +24,9 @@ func RestProfile(rest []string, w http.ResponseWriter, r *http.Request) {
 	if result, err := profile.Get(queries, rest[controller.FIELD_INDEX], rest[controller.VALUE_INDEX]); err == nil {
 		output(profile.Format(result), queries, w)
 		return
+	} else {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 }
 
 
@@ -38,11 +39,12 @@ func RestContent(rest []string, w http.ResponseWriter, r *http.Request) {
 	queries, _ := url.ParseQuery(r.URL.RawQuery)
 	content := new(model.Content)
 
-	if _, err := content.Get(queries, rest[controller.FIELD_INDEX], rest[controller.VALUE_INDEX]); err == nil {
-//		output(content.Format(result), queries, w)
+	if result, err := content.Get(queries, rest[controller.FIELD_INDEX], rest[controller.VALUE_INDEX]); err == nil {
+		output(content.Format(result), queries, w)
 		return
+	} else {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 }
 
 func throwaway() {

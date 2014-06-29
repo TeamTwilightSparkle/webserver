@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/TeamTwilightSparkle/webserver/controller/database"
+	"net/url"
 )
 
 type content_functions func (string, string)([]Content, error)
@@ -32,7 +33,7 @@ func init() {
 	content_table["author"] = getContentFromString
 }
 
-func (_ Content) Get(field, find string) ([]Content, error) {
+func (_ Content) Get(queries url.Values, field, find string) ([]Content, error) {
 	if call := content_table[field]; call != nil {
 		return call(field, find)
 	}

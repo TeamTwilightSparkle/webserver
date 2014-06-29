@@ -21,7 +21,7 @@ You never know when an idea will be in the sky? No?
 ## Usage
  - Setting up database: (This assumes you have postgresql installed and you know how to use the cli)
  
-        cd $GOPATH/src/github.com/souleiman/seesaw/sql/
+        cd $GOPATH/src/github.com/TeamTwilightSparkle/webserver/sql/
         psql -U <your_username> postgres -f db.sql
         psql -U <your_username> imagine -f tables.sql
         
@@ -33,7 +33,7 @@ You never know when an idea will be in the sky? No?
  - How to run:
  
         # To build and compile your project
-        go install github.com/TeamTwilightSparkle/webserver/server
+        go install $GOPATH/src/github.com/TeamTwilightSparkle/webserver/server
         
         #and to run, 
         server [-U psqlUser] [-D psqlDbname] [-R api root] [-r root dir] [-p port]

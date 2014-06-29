@@ -51,9 +51,14 @@ INSERT INTO CHARGE (charged) VALUES (TRUE);
 INSERT INTO CHARGE (charged) VALUES (TRUE);
 INSERT INTO CHARGE (charged) VALUES (TRUE);
 INSERT INTO CHARGE (charged) VALUES (TRUE);
+INSERT INTO CHARGE (charged) VALUES (TRUE);
+INSERT INTO CHARGE (charged) VALUES (TRUE);
 
 -- Profile charges on Content
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Soul', 1);
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Ty', 2);
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Ankit', 3);
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (2, 'Soul', 4);
+INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Abdullah', 5);
+INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Ankit', 6);
+

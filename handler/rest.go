@@ -22,12 +22,12 @@ func RestProfile(rest []string, w http.ResponseWriter, r *http.Request) {
 	var profiles []model.Profile
 	var err error
 
-	if profiles, err = profile.Get(queries.Get("omnisearch"), rest[FIELD_INDEX], rest[VALUE_INDEX]); err != nil {
+	if profiles, err = profile.Get(queries, rest[FIELD_INDEX], rest[VALUE_INDEX]); err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
-	iface := profile.Validate(profiles)
+	iface := profile.Format(profiles)
 	output(iface, queries, w)
 }
 

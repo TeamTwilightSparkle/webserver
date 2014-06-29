@@ -17,6 +17,7 @@ Get You One.
         # With GOPATH and GOROOT properly setup
         go get github.com/coopernurse/gorp #gorp for easy to use db orm
         go get github.com/lib/pq #postgresql driver for golang
+        go get go get github.com/docopt/docopt-go # argv parser
 
 ## Usage
  - Setting up database: (This assumes you have postgresql installed and you know how to use the cli)

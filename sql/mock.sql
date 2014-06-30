@@ -11,6 +11,8 @@ INSERT INTO CONTENT (title, summary, description, last_modified, date_created)
     VALUES ('Title B', 'This is a summary 2', 'This is a description 2', '12-12-12', '12-12-12');
 INSERT INTO CONTENT (title, summary, description, last_modified, date_created)
     VALUES ('Title C', 'This is a summary 3', 'This is a description 3', '12-12-12', '12-12-12');
+INSERT INTO CONTENT (title, summary, description, last_modified, date_created)
+    VALUES ('Title D', 'This is a summary 4', 'This is a description 4', '12-12-12', '12-12-12');
 
 -- Content Author
 
@@ -21,6 +23,8 @@ INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Soul');
 INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Ty');
 INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Ankit');
 INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Abdullah');
+INSERT INTO CONTENT_PROFILES (id, username) VALUES (4, 'Ankit');
+INSERT INTO CONTENT_PROFILES (id, username) VALUES (4, 'Abdullah');
 
 -- Tags
 INSERT INTO TAG (tag) VALUES ('YOLO');

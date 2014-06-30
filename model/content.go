@@ -30,7 +30,7 @@ type Content struct {
 func init() {
 	content_table = make(map[string] content_functions)
 	content_table["id"] = getContentFromInt
-	content_table["author"] = getContentFromString
+	content_table["author"] = getContentFromAuthor
 }
 
 func (_ Content) Get(queries url.Values, field, find string) ([]Content, error) {
@@ -55,12 +55,33 @@ func getContentFromInt(queries url.Values, field, value string) (content []Conte
 	return
 }
 
-func getContentFromString(queries url.Values, field, value string) (content []Content, err error) {
+func getContentFromAuthor(queries url.Values, _, value string) (content []Content, err error) {
+	var sql_query string
+	if queries.Get("omnisearch") == "true" {
+		sql_query = fmt.Sprintf(
+			"SELECT DISTINCT CONTENT.* FROM CONTENT JOIN CONTENT_PROFILES USING (id) WHERE username LIKE '%s%%'",
+			value)
+	} else {
+		sql_query = fmt.Sprintf(
+			"SELECT CONTENT.* FROM CONTENT JOIN CONTENT_PROFILES USING (id) WHERE username = '%s'",
+			value)
+	}
+	if err = database.Conn.Select(&content, sql_query); err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	for i, _ := range content {
+		content[i].setAuthors(queries)
+		content[i].setComments(queries)
+		content[i].setTags(queries)
+		content[i].setCharges(queries)
+	}
 
 	return
 }
 
-func (c *Content) setAuthors(queries url.Values) error {
+func (c *Content) setAuthors(_ url.Values) error {
 	var profiles []Profile
 	var sql_query string = fmt.Sprintf(
 		"SELECT CONTENT_PROFILES.username FROM CONTENT JOIN CONTENT_PROFILES USING (ID) WHERE CONTENT.ID = %d", c.Id)
@@ -75,7 +96,7 @@ func (c *Content) setAuthors(queries url.Values) error {
 	return nil
 }
 
-func (c *Content) setComments(queries url.Values) error {
+func (c *Content) setComments(_ url.Values) error {
 	var comment []Comment
 	var sql_query string = fmt.Sprintf(
 		"SELECT COMMENT.* FROM COMMENT WHERE COMMENT.ID = %d ORDER BY COMMENT.POST_NUMBER", c.Id)
@@ -88,7 +109,7 @@ func (c *Content) setComments(queries url.Values) error {
 	return nil
 }
 
-func (c *Content) setTags(queries url.Values) error {
+func (c *Content) setTags(_ url.Values) error {
 	var tags []Tag
 	var sql_query string = fmt.Sprintf(
 		"SELECT CONTENT_TAG.tag FROM CONTENT JOIN CONTENT_TAG USING (ID) WHERE CONTENT.ID = %d", c.Id)
@@ -103,7 +124,7 @@ func (c *Content) setTags(queries url.Values) error {
 	return nil
 }
 
-func (c *Content) setCharges(queries url.Values) (err error) {
+func (c *Content) setCharges(_ url.Values) (err error) {
 	var count int64
 	var sql_query string = fmt.Sprintf(
 		"SELECT count(*) FROM CONTENT JOIN PROFILE_CHARGES USING (ID) WHERE CONTENT.ID = %d", c.Id)

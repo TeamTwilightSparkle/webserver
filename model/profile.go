@@ -61,6 +61,10 @@ func getProfileFromString(queries url.Values, field, value string) (profile []Pr
 		return nil, err
 	}
 
+	for i, _ := range profile {
+		profile[i].setCharges(queries)
+		profile[i].setContent(queries)
+	}
 	return
 }
 

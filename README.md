@@ -34,13 +34,13 @@ Get You One.
  - How to run:
  
         # To build and compile your project
-        go install $GOPATH/src/github.com/TeamTwilightSparkle/webserver/server
+        go install $GOPATH/src/github.com/TeamTwilightSparkle/webserver/
         
         #and to run, 
         server [-U psqlUser] [-D psqlDbname] [-R api root] [-r root dir] [-p port]
         
         #Or, you can
-        go run $GOPATH/src/github.com/TeamTwilightSparkle/webserver/server/server.go [-U psqlUser] [-D psqlDbname] [-R api root] [-r root dir] [-p port]
+        go run $GOPATH/src/github.com/TeamTwilightSparkle/webserver/server.go [-U psqlUser] [-D psqlDbname] [-R api root] [-r root dir] [-p port]
 
 ## Notes
  - Make sure you have GOPATH and GOROOT setup. (Add $GOPATH/bin to your $PATH for your convenience)

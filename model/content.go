@@ -21,7 +21,7 @@ type Content struct {
 	Description   string	`json:"description"`
 	Comments	  []Comment	`json:"comments",db:"-"`
 	Tags		  []string	`json:"tags",db:"-"`
-	Charges		  int		`json:"charges",db:"-"`
+	Charges		  int		`json:"charges"`
 	Image         *string	`json:"image"`
 	Last_modified time.Time	`json:"last_modfied"`
 	Date_created  time.Time	`json:"date_created"`
@@ -31,6 +31,8 @@ func init() {
 	content_table = make(map[string] content_functions)
 	content_table["id"] = getContentFromInt
 	content_table["author"] = getContentFromAuthor
+	content_table["top"] = getContentFromRanking
+	content_table["tag"] = getContentFromTag
 }
 
 func (_ Content) Get(queries url.Values, field, find string) ([]Content, error) {
@@ -45,13 +47,7 @@ func getContentFromInt(queries url.Values, field, value string) (content []Conte
 		return nil, err
 	}
 
-	for i, _ := range content {
-		content[i].setAuthors(queries)
-		content[i].setComments(queries)
-		content[i].setTags(queries)
-		content[i].setCharges(queries)
-	}
-
+	finalizeContent(queries, content)
 	return
 }
 
@@ -71,13 +67,27 @@ func getContentFromAuthor(queries url.Values, _, value string) (content []Conten
 		return nil, err
 	}
 
-	for i, _ := range content {
-		content[i].setAuthors(queries)
-		content[i].setComments(queries)
-		content[i].setTags(queries)
-		content[i].setCharges(queries)
+	finalizeContent(queries, content)
+	return
+}
+
+func getContentFromRanking(queries url.Values, _, value string) (content []Content, err error) {
+	sql_query := "SELECT * FROM CONTENT ORDER BY CHARGES DESC LIMIT " + value
+	if err = database.Conn.Select(&content, sql_query); err != nil {
+		return nil, err
 	}
 
+	finalizeContent(queries, content)
+	return
+}
+
+func getContentFromTag(queries url.Values, _, value string) (content []Content, err error) {
+	sql_query := fmt.Sprintf("SELECT CONTENT.* FROM CONTENT JOIN CONTENT_TAG t USING (id) WHERE t.tag = '%s'", value)
+	if err = database.Conn.Select(&content, sql_query); err != nil {
+		return nil, err
+	}
+
+	finalizeContent(queries, content)
 	return
 }
 
@@ -124,16 +134,12 @@ func (c *Content) setTags(_ url.Values) error {
 	return nil
 }
 
-func (c *Content) setCharges(_ url.Values) (err error) {
-	var count int64
-	var sql_query string = fmt.Sprintf(
-		"SELECT count(*) FROM CONTENT JOIN PROFILE_CHARGES USING (ID) WHERE CONTENT.ID = %d", c.Id)
-
-	if count, err = database.Conn.SelectInt(sql_query); err != nil {
-		return err
+func finalizeContent(queries url.Values, content []Content) {
+	for i, _ := range content {
+		content[i].setAuthors(queries)
+		content[i].setComments(queries)
+		content[i].setTags(queries)
 	}
-	c.Charges = int(count)
-	return nil
 }
 
 func (_ Content) Format(profile []Content) interface{} {

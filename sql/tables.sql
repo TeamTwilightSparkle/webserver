@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS CONTENT (
     summary       VARCHAR(160) NOT NULL,
     description   VARCHAR(512) NOT NULL,
     image         VARCHAR(255),
+    charges       INT DEFAULT 0 CHECK (charges >= 0),
     last_modified DATE         NOT NULL,
     date_created  DATE         NOT NULL
 );

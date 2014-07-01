@@ -42,10 +42,7 @@ func getProfileFromInt(queries url.Values, field, value string) (profile []Profi
 		return nil, err
 	}
 
-	for i, _ := range profile {
-		profile[i].setCharges(queries)
-		profile[i].setContent(queries)
-	}
+	finalizeProfile(queries, profile)
 	return
 }
 
@@ -61,11 +58,15 @@ func getProfileFromString(queries url.Values, field, value string) (profile []Pr
 		return nil, err
 	}
 
+	finalizeProfile(queries, profile)
+	return
+}
+
+func finalizeProfile(queries url.Values, profile []Profile) {
 	for i, _ := range profile {
 		profile[i].setCharges(queries)
 		profile[i].setContent(queries)
 	}
-	return
 }
 
 func (p *Profile) setCharges(queries url.Values) error {

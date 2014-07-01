@@ -66,3 +66,9 @@ INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (2, 'Soul', 4);
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Abdullah', 5);
 INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Ankit', 6);
 
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 2;
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 3;
+UPDATE CONTENT SET charges = charges + 1 WHERE id = 3;

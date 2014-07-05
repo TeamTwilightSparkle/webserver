@@ -33,6 +33,7 @@ func init() {
 	content_table["author"] = getContentFromAuthor
 	content_table["top"] = getContentFromRanking
 	content_table["tag"] = getContentFromTag
+	content_table["recent"] = getRecentFromTime
 }
 
 func (_ Content) Get(queries url.Values, field, find string) ([]Content, error) {
@@ -63,7 +64,16 @@ func getContentFromAuthor(queries url.Values, _, value string) (content []Conten
 			value)
 	}
 	if err = database.Conn.Select(&content, sql_query); err != nil {
-		fmt.Println(err)
+		return nil, err
+	}
+
+	finalizeContent(queries, content)
+	return
+}
+
+func getRecentFromTime(queries url.Values, _, value string) (content []Content, err error) {
+	var sql_query string = "SELECT * FROM CONTENT ORDER BY DATE_CREATED DESC LIMIT " + value
+	if err = database.Conn.Select(&content, sql_query); err != nil {
 		return nil, err
 	}
 
